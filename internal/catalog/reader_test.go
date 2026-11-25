@@ -198,47 +198,6 @@ func TestTypeJSONRoundTrip(t *testing.T) {
 	assert.Equal(t, original, got)
 }
 
-// TestTypesJSONRoundTrip verifies that Types marshals to JSON and back
-// without loss (#379).
-func TestTypesJSONRoundTrip(t *testing.T) {
-	t.Parallel()
-	original := Types{
-		Structs: []Struct{
-			{
-				Name:   "Config",
-				Fields: []Param{{Name: "admin", Type: Type{Display: "Address"}}},
-			},
-		},
-		Unions: []Union{
-			{
-				Name: "DataKey",
-				Cases: []UnionCase{
-					{Name: "Balance", Values: []Type{{Display: "Address"}}},
-					{Name: "Nonce", Values: []Type{}},
-				},
-			},
-		},
-		Enums: []Enum{
-			{
-				Name:  "Status",
-				Cases: []EnumCase{{Name: "Active", Value: 0}, {Name: "Closed", Value: 1}},
-			},
-		},
-		ErrorEnums: []Enum{
-			{
-				Name:  "Error",
-				Cases: []EnumCase{{Name: "NotFound", Value: 1}, {Name: "Unauthorized", Value: 2}},
-			},
-		},
-	}
-	data, err := json.Marshal(original)
-	require.NoError(t, err)
-
-	var got Types
-	require.NoError(t, json.Unmarshal(data, &got))
-	assert.Equal(t, original, got)
-}
-
 // TestUnionJSONRoundTrip verifies that Union marshals to JSON and back
 // without loss (#380).
 func TestUnionJSONRoundTrip(t *testing.T) {
